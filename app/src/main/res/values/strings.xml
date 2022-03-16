@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SpicaWeather</string>
+    <string name="str_hint_search_city">请输入城市名或拼音</string>
+    <string name="str_cancel">取消</string>
+    <string name="str_retry_location">重新定位</string>
+    <string name="str_is_location">正在定位</string>
+    <string name="rationale_location">将获取地理信息用于快速定位城市</string>
+    <string name="rationale_location_ok">好的</string>
+    <string name="rationale_location_cancel">取消</string>
+    <string name="sunrise_sunset_time">日出%1$s\n日落%2$s</string>
+</resources>

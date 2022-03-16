@@ -3,13 +3,13 @@
     package="com.spica.weatherc">
 
     <application
-        android:theme="@style/Theme.SpicaWeatherCompose版"
+        android:theme="@style/Theme.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_app"
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:theme="@style/Theme.SpicaWeatherCompose版"
+            android:theme="@style/Theme.App"
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">

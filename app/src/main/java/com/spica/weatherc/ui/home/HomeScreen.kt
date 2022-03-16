@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.spica.weatherc.R
+import com.spica.weatherc.ui.widget.card.HourlyCard
 import com.spica.weatherc.ui.widget.card.NowCard
 
 
@@ -61,7 +62,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(20.dp))
             NowCard(weather = null)
             Spacer(modifier = Modifier.height(20.dp))
-            NowCard(weather = null)
+            HourlyCard(list = listOf())
             Spacer(modifier = Modifier.height(20.dp))
             NowCard(weather = null)
             Spacer(modifier = Modifier.height(20.dp))

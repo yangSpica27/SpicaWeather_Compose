@@ -34,16 +34,13 @@ import androidx.compose.ui.unit.sp
 import com.spica.weatherc.R
 import com.spica.weatherc.ui.theme.BgPathColor
 import com.spica.weatherc.ui.theme.LightTextColor
-import me.spica.weather.model.weather.HourlyWeatherBean
+import me.spica.weather.model.weather.DailyWeatherBean
 
 
-/**
- * Hourly Weather Card
- */
 @Composable
-fun HourlyCard(list: List<HourlyWeatherBean>) {
+fun DailyCard(list: List<DailyWeatherBean>?) {
     val listData = (0..9).toList()
-    Card {
+    Card() {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -52,7 +49,7 @@ fun HourlyCard(list: List<HourlyWeatherBean>) {
         ) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "小时级别天气信息", fontSize = 14.sp,
+                text = "天级别天气信息", fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 14.dp)
             )

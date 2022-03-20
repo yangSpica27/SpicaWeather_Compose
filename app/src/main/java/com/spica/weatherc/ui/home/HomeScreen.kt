@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -23,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.spica.weatherc.R
+import com.spica.weatherc.ui.widget.card.DailyCard
 import com.spica.weatherc.ui.widget.card.HourlyCard
 import com.spica.weatherc.ui.widget.card.NowCard
 
@@ -64,11 +67,12 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(20.dp))
             HourlyCard(list = listOf())
             Spacer(modifier = Modifier.height(20.dp))
-            NowCard(weather = null)
+            DailyCard(list = listOf())
             Spacer(modifier = Modifier.height(20.dp))
             NowCard(weather = null)
             Spacer(modifier = Modifier.height(20.dp))
             NowCard(weather = null)
+            Spacer(modifier = Modifier.height(40.dp))
         }
 
     }
@@ -77,14 +81,17 @@ fun HomeScreen(
 
 @Composable
 fun TopBar() {
-    Row(Modifier.padding(horizontal = 12.dp, vertical = 12.dp)) {
-        Icon(painter = painterResource(id = R.drawable.ic_menu), contentDescription = null)
-        Text(
-            text = "中国，南京",
-            modifier = Modifier.weight(1f),
-            fontStyle = MaterialTheme.typography.h2.fontStyle,
-            textAlign = TextAlign.Center
-        )
-        Icon(painter = painterResource(id = R.drawable.ic_tip), contentDescription = null)
+    Column(Modifier.fillMaxWidth()) {
+        Row(Modifier.padding(horizontal = 12.dp, vertical = 12.dp)) {
+            Icon(painter = painterResource(id = R.drawable.ic_menu), contentDescription = null)
+            Text(
+                text = "中国，南京",
+                modifier = Modifier.weight(1f),
+                fontStyle = MaterialTheme.typography.h2.fontStyle,
+                textAlign = TextAlign.Center
+            )
+            Icon(painter = painterResource(id = R.drawable.ic_tip), contentDescription = null)
+        }
+        Divider(Modifier.height(1.dp))
     }
 }

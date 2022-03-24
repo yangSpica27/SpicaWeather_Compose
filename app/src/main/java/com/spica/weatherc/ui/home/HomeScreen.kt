@@ -1,13 +1,8 @@
 package com.spica.weatherc.ui.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -25,9 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.spica.weatherc.R
-import com.spica.weatherc.ui.widget.card.DailyCard
-import com.spica.weatherc.ui.widget.card.HourlyCard
-import com.spica.weatherc.ui.widget.card.NowCard
+import com.spica.weatherc.ui.navigation.NavScreen
+import com.spica.weatherc.ui.widget.card.*
 
 
 @Composable
@@ -43,8 +37,11 @@ fun HomeScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { },
-                backgroundColor = Color.Black
+                onClick = {
+                    // 点击跳转到城市选择
+                    navController.navigate(NavScreen.Cities.route)
+                },
+                backgroundColor = Color.Black,
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_plus),
@@ -69,9 +66,9 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(20.dp))
             DailyCard(list = listOf())
             Spacer(modifier = Modifier.height(20.dp))
-            NowCard(weather = null)
+            SunriseCard()
             Spacer(modifier = Modifier.height(20.dp))
-            NowCard(weather = null)
+            TipsCard()
             Spacer(modifier = Modifier.height(40.dp))
         }
 

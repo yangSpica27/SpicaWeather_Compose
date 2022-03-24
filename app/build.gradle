@@ -58,7 +58,7 @@ android {
 }
 
 dependencies {
-
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
   implementation 'androidx.core:core-ktx:1.7.0'
   implementation "androidx.compose.ui:ui:$compose_version"
   implementation "androidx.compose.material:material:$compose_version"
@@ -86,6 +86,7 @@ dependencies {
 
   // hilt
   implementation 'com.google.dagger:hilt-android:2.41'
+  implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
   kapt 'com.google.dagger:hilt-compiler:2.41'
 
   // Timber 日志
@@ -110,6 +111,7 @@ dependencies {
   implementation "com.google.accompanist:accompanist-insets:$accompanistVersion"
   implementation "com.google.accompanist:accompanist-flowlayout:$accompanistVersion"
 
+  implementation 'com.github.SilenceDut:jpinyin:v1.0'
 }
 
 

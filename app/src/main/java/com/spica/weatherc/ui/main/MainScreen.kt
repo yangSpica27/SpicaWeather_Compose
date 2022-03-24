@@ -10,6 +10,7 @@ import com.spica.weatherc.ui.detail.DetailScreen
 import com.spica.weatherc.ui.home.HomeScreen
 import com.spica.weatherc.ui.navigation.NavScreen
 import com.spica.weatherc.ui.select.SelectScreen
+import com.spica.weatherc.ui.setting.SettingScreen
 
 @Composable
 fun MainScreen() {
@@ -36,6 +37,9 @@ fun MainScreen() {
             composable(NavScreen.Select.route){
                 SelectScreen(navController = navController)
             }
+           composable(NavScreen.Setting.route){
+               SettingScreen()
+           }
         }
 
     }

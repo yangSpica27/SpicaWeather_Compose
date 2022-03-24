@@ -20,5 +20,7 @@ sealed class NavScreen(val route: String) {
     // 地点选择页面
     object Select : NavScreen("Select")
 
+    // 设置页面
+    object Setting : NavScreen("Setting")
 
 }

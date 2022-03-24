@@ -5,12 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +28,7 @@ fun HomeScreen(
     var previousOffset = 0
     Scaffold(
         topBar = {
-            TopBar()
+            TopBar(navController = navController)
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -77,17 +72,25 @@ fun HomeScreen(
 
 
 @Composable
-fun TopBar() {
+fun TopBar(navController: NavController) {
     Column(Modifier.fillMaxWidth()) {
         Row(Modifier.padding(horizontal = 12.dp, vertical = 12.dp)) {
-            Icon(painter = painterResource(id = R.drawable.ic_menu), contentDescription = null)
+            IconButton(onClick = {
+                navController.navigate(NavScreen.Select.route)
+            }) {
+                Icon(painter = painterResource(id = R.drawable.ic_menu), contentDescription = null)
+            }
             Text(
                 text = "中国，南京",
                 modifier = Modifier.weight(1f),
                 fontStyle = MaterialTheme.typography.h2.fontStyle,
                 textAlign = TextAlign.Center
             )
-            Icon(painter = painterResource(id = R.drawable.ic_tip), contentDescription = null)
+            IconButton(onClick = {
+                navController.navigate(NavScreen.Setting.route)
+            }) {
+                Icon(painter = painterResource(id = R.drawable.ic_tip), contentDescription = null)
+            }
         }
         Divider(Modifier.height(1.dp))
     }

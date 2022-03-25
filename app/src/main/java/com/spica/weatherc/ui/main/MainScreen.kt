@@ -28,8 +28,8 @@ fun MainScreen() {
             composable(NavScreen.Home.route) {
                 HomeScreen(navController = navController)
             }
-            composable(NavScreen.Cities.route){
-                CitiesScreen(navController = navController)
+            composable(NavScreen.Cities.route,){
+                CitiesScreen(navController = navController,)
             }
             composable(NavScreen.ContentDetails.route){
                 DetailScreen(navController = navController)
@@ -38,7 +38,7 @@ fun MainScreen() {
                 SelectScreen(navController = navController)
             }
            composable(NavScreen.Setting.route){
-               SettingScreen()
+               SettingScreen(navController = navController)
            }
         }
 

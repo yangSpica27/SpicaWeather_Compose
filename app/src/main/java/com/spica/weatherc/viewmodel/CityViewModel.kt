@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.spica.weatherc.model.city.CityBean
 import com.spica.weatherc.persistence.repository.CityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 
@@ -14,7 +15,7 @@ class CityViewModel @Inject  constructor(
 ):ViewModel() {
 
 
-    fun getAllCities() = cities
+    fun getAllCity() = cities
 
 
 }

@@ -1,10 +1,12 @@
-package me.spica.weather.model.weather
+package com.spica.weatherc.model.weather
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.spica.weatherc.model.weather.AirBean
-import com.spica.weatherc.model.weather.LifeIndexBean
+import me.spica.weather.model.weather.DailyWeatherBean
+import me.spica.weather.model.weather.HourlyWeatherBean
+import me.spica.weather.model.weather.NowWeatherBean
+import me.spica.weather.model.weather.WeatherBeanConverter
 
 
 @Entity

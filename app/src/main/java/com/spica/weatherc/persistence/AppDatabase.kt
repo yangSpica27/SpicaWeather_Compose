@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.spica.weatherc.model.city.CityBean
 import com.spica.weatherc.persistence.dao.CityDao
 import com.spica.weatherc.persistence.dao.WeatherDao
-import me.spica.weather.model.weather.Weather
+import com.spica.weatherc.model.weather.Weather
 
 
 @Database(entities = [CityBean::class, Weather::class], version = 3, exportSchema = false)

@@ -1,11 +1,9 @@
 package com.spica.weatherc.ui.cities
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,15 +20,12 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.spica.weatherc.R
 import com.spica.weatherc.model.city.CityBean
 import com.spica.weatherc.ui.theme.LightBackgroundColor
-import com.spica.weatherc.ui.theme.LightTextColor
 import com.spica.weatherc.viewmodel.CityViewModel
 
 /**
@@ -47,13 +42,15 @@ fun CitiesScreen(navController: NavController) {
                 .fillMaxHeight()
                 .fillMaxWidth()
         ) {
-            SearchBar(onSearch = {})
+            SearchBar(onSearch = {
+
+            })
             LazyColumn(
                 Modifier
                     .fillMaxHeight()
                     .weight(1f)
             ) {
-                items(model.getAllCities()) { item: CityBean ->
+                items(model.getAllCity()) { item: CityBean ->
                     CityItem(cityBean = item)
                 }
             }
@@ -72,8 +69,7 @@ private fun CityItem(cityBean: CityBean) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = cityBean.cityName,
-                fontStyle = MaterialTheme.typography.h6.fontStyle,
-                fontSize = MaterialTheme.typography.h6.fontSize,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 14.dp),
@@ -85,8 +81,7 @@ private fun CityItem(cityBean: CityBean) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 14.dp),
-                fontStyle = MaterialTheme.typography.subtitle1.fontStyle,
-                fontSize = MaterialTheme.typography.subtitle1.fontSize,
+                style = MaterialTheme.typography.subtitle1
             )
             Spacer(modifier = Modifier.height(12.dp))
             Divider(Modifier.height(1.dp))
@@ -96,8 +91,9 @@ private fun CityItem(cityBean: CityBean) {
 
 
 @Composable
-private fun SearchBar(onSearch: (keyword: String) -> Unit) {
-    val value = remember { mutableStateOf("") }
+private fun SearchBar(
+    onSearch: (keyword: String) -> Unit
+) {
     Row(
         modifier = Modifier
             .background(LightBackgroundColor)
@@ -115,7 +111,8 @@ private fun SearchBar(onSearch: (keyword: String) -> Unit) {
         ) {
             CustomTextField(
                 showCleanIcon = true,
-                hint = "城市名称"
+                hint = "城市名称",
+                onTextChange = onSearch
             )
         }
     }

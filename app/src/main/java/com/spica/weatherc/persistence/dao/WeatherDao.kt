@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import me.spica.weather.model.weather.Weather
+import com.spica.weatherc.model.weather.Weather
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 

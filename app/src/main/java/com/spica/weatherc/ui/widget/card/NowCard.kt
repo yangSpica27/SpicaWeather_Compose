@@ -20,12 +20,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.spica.weatherc.R
+import com.spica.weatherc.common.WeatherCodeUtils
+import com.spica.weatherc.common.getIconRes
 import com.spica.weatherc.ui.theme.LightTextColor
-import me.spica.weather.model.weather.Weather
+import com.spica.weatherc.model.weather.Weather
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Composable
-fun NowCard(weather: Weather?) {
+fun NowCard(weather: Weather) {
+    val sdf2 = SimpleDateFormat("更新于：HH:mm", Locale.CHINA)
     Card {
         Column(Modifier.fillMaxWidth()) {
             ConstraintLayout(
@@ -42,7 +47,14 @@ fun NowCard(weather: Weather?) {
                     air
                 ) = createRefs()
                 Image(
-                    painter = painterResource(id = R.drawable.ic_sunny),
+                    painter = painterResource(
+                        id = WeatherCodeUtils.getWeatherCode(
+                            weather
+                                .todayWeather
+                                .iconId.toString()
+                        )
+                            .getIconRes()
+                    ),
                     contentDescription = null,
                     modifier = Modifier
                         .height(64.dp)
@@ -54,7 +66,7 @@ fun NowCard(weather: Weather?) {
 
                 // 温度
                 Text(
-                    text = "20℃",
+                    text = "${weather.todayWeather.temp}℃",
                     fontStyle = MaterialTheme.typography.h3.fontStyle,
                     fontSize = MaterialTheme.typography.h3.fontSize,
                     color = Color.White,
@@ -65,7 +77,7 @@ fun NowCard(weather: Weather?) {
                 )
                 // 天气
                 Text(
-                    text = "阴天",
+                    text = weather.todayWeather.weatherName,
                     color = Color.White,
                     fontStyle = MaterialTheme.typography.body1.fontStyle,
                     fontSize = MaterialTheme.typography.body1.fontSize,
@@ -79,7 +91,7 @@ fun NowCard(weather: Weather?) {
 
                 // air
                 Text(
-                    text = "空气质量：良",
+                    text = "空气质量：${weather.air.category}",
                     color = Color.White,
                     fontStyle = MaterialTheme.typography.body2.fontStyle,
                     fontSize = MaterialTheme.typography.body2.fontSize,
@@ -92,7 +104,7 @@ fun NowCard(weather: Weather?) {
 
                 // 体感温度
                 Text(
-                    text = "体感温度：12℃",
+                    text = "体感温度：${weather.todayWeather.feelTemp}℃",
                     color = Color.White,
                     fontStyle = MaterialTheme.typography.body2.fontStyle,
                     fontSize = MaterialTheme.typography.body2.fontSize,
@@ -106,7 +118,7 @@ fun NowCard(weather: Weather?) {
 
                 // 更新时间
                 Text(
-                    text = "更新时间：12:00",
+                    text = sdf2.format(weather.todayWeather.obsTime),
                     color = Color.White,
                     fontStyle = MaterialTheme.typography.body2.fontStyle,
                     fontSize = MaterialTheme.typography.body2.fontSize,
@@ -134,7 +146,7 @@ fun NowCard(weather: Weather?) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "25km/h",
+                        text = "${weather.todayWeather.windSpeed}km/h",
                         fontStyle = MaterialTheme.typography.h6.fontStyle,
                         fontSize = MaterialTheme.typography.h6.fontSize,
                         fontWeight = FontWeight.Bold
@@ -151,7 +163,7 @@ fun NowCard(weather: Weather?) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "1007pha",
+                        text = "${weather.todayWeather.windPa}pha",
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         fontStyle = MaterialTheme.typography.h6.fontStyle,
@@ -170,7 +182,7 @@ fun NowCard(weather: Weather?) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "80%",
+                        text = "${weather.todayWeather.water}%",
                         fontStyle = MaterialTheme.typography.h6.fontStyle,
                         fontSize = MaterialTheme.typography.h6.fontSize,
                         fontWeight = FontWeight.Bold,

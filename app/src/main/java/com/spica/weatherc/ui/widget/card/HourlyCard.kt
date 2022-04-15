@@ -1,18 +1,13 @@
 package com.spica.weatherc.ui.widget.card
 
+import android.graphics.BlurMaskFilter
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
@@ -22,21 +17,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import com.spica.weatherc.R
 import com.spica.weatherc.common.WeatherCodeUtils
 import com.spica.weatherc.common.getIconRes
 import com.spica.weatherc.ui.theme.BgPathColor
 import com.spica.weatherc.ui.theme.LightTextColor
+import kotlinx.coroutines.coroutineScope
 import me.spica.weather.model.weather.HourlyWeatherBean
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -85,76 +81,6 @@ fun HourlyCard(list: List<HourlyWeatherBean>) {
                         minValue = sortList.first().temp,
                         maxValue = sortList.last().temp
                     )
-
-
-//                    Canvas(modifier = Modifier
-//                        .height(100.dp)
-//                        .width(70.dp),
-//                        onDraw = {
-//                            val bgPath = Path()
-//                            bgPath.moveTo(0f, size.height / 2f)
-//                            bgPath.lineTo(size.width, size.height / 2f)
-//                            bgPath.lineTo(size.width, size.height)
-//                            bgPath.lineTo(0f, size.height)
-//                            bgPath.close()
-//
-//                            drawPath(
-//                                path = bgPath,
-//                                style = Fill,
-//                                brush = Brush.linearGradient(
-//                                    colors = listOf(
-//                                        BgPathColor,
-//                                        Color.Transparent
-//                                    ),
-//                                    start = Offset(0f, 0f),
-//                                    end = Offset(0f, size.height)
-//                                )
-//                            )
-//
-//                            drawLine(
-//                                color = Color.LightGray,
-//                                start = Offset(0f, 50.dp.toPx()),
-//                                end = Offset(35.dp.toPx(), 50.dp.toPx()),
-//                                strokeWidth = 2.dp.toPx(),
-//
-//                                )
-//                            drawLine(
-//                                color = Color.LightGray,
-//                                start = Offset(35f, 50.dp.toPx()),
-//                                end = Offset(70.dp.toPx(), 50.dp.toPx()),
-//                                strokeWidth = 2.dp.toPx()
-//                            )
-//
-//                            drawLine(
-//                                color = Color.LightGray,
-//                                start = Offset(size.width / 2f, size.height / 2f),
-//                                end = Offset(size.width / 2f, size.height),
-//                                strokeWidth = 2.dp.toPx(),
-//                                pathEffect = PathEffect
-//                                    .dashPathEffect(
-//                                        floatArrayOf(
-//                                            4.dp.toPx(),
-//                                            2.dp.toPx()
-//                                        ), 0f
-//                                    )
-//                            )
-//
-//
-//
-//                            drawCircle(
-//                                color = Color.DarkGray,
-//                                radius = 6.dp.toPx(),
-//                                center = Offset(x = 35.dp.toPx(), y = 50.dp.toPx())
-//                            )
-//
-//                            drawCircle(
-//                                color = Color.White,
-//                                radius = 4.dp.toPx(),
-//                                center = Offset(x = 35.dp.toPx(), y = 50.dp.toPx())
-//                            )
-//
-//                        })
-
                 }
             }
         }
@@ -182,6 +108,13 @@ private fun HourlyWeatherItem(
     maxValue: Int,// 最大值
     minValue: Int,// 最小值
 ) {
+    val blurLinePaint = Paint().asFrameworkPaint().apply {
+        strokeWidth = 6f
+        color = ContextCompat.getColor(LocalContext.current,R.color.textColorPrimaryHintLight)
+        maskFilter = BlurMaskFilter(4f,BlurMaskFilter.Blur.SOLID)
+    }
+
+
     Column(Modifier.width(70.dp)) {
         Text(
             text = if (divisionDate.before(item.fxTime)) {
@@ -195,11 +128,18 @@ private fun HourlyWeatherItem(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(12.dp))
+
         Canvas(
             modifier = Modifier
                 .width(70.dp)
                 .height(70.dp),
             onDraw = {
+
+
+                blurLinePaint.maskFilter = BlurMaskFilter(
+                    4.dp.toPx(),
+                    BlurMaskFilter.Blur.SOLID
+                )
 
                 val paddingTop = 20.dp.toPx()
 
@@ -230,6 +170,7 @@ private fun HourlyWeatherItem(
                     bgPath.lineTo(offsetCenter.x, offsetCenter.y)
                     bgPath.close()
 
+                    // 绘制背景
                     drawPath(
                         path = bgPath,
                         style = Fill,
@@ -243,12 +184,15 @@ private fun HourlyWeatherItem(
                         )
                     )
 
-                    drawLine(
-                        color = Color.LightGray,
-                        start = offsetCenter,
-                        end = offsetLeft,
-                        strokeWidth = 2.dp.toPx()
-                    )
+                    // 绘制线
+                    drawIntoCanvas { canvas ->
+                        canvas.nativeCanvas.drawLine(
+                            offsetCenter.x, offsetCenter.y,
+                            offsetLeft.x, offsetLeft.y,
+                            blurLinePaint
+                        )
+                    }
+
 
                     drawLine(
                         color = Color.LightGray,
@@ -300,12 +244,23 @@ private fun HourlyWeatherItem(
                         )
                     )
 
-                    drawLine(
-                        color = Color.LightGray,
-                        start = offsetCenter,
-                        end = offsetRight,
-                        strokeWidth = 2.dp.toPx()
-                    )
+//                    drawLine(
+//                        color = Color.LightGray,
+//                        start = offsetCenter,
+//                        end = offsetRight,
+//                        strokeWidth = 2.dp.toPx()
+//                    )
+
+
+                    // 绘制线
+                    drawIntoCanvas { canvas ->
+                        canvas.nativeCanvas.drawLine(
+                            offsetCenter.x, offsetCenter.y,
+                            offsetRight.x, offsetRight.y,
+                            blurLinePaint
+                        )
+                    }
+
 
 
                     drawLine(
@@ -344,8 +299,6 @@ private fun HourlyWeatherItem(
                     radius = 3.dp.toPx(),
                     center = offsetCenter
                 )
-
-
             }
         )
 
@@ -386,3 +339,4 @@ private fun HourlyWeatherItem(
     }
 
 }
+

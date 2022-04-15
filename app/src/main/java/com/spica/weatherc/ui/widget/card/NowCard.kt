@@ -2,12 +2,7 @@ package com.spica.weatherc.ui.widget.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -19,11 +14,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.spica.weatherc.R
 import com.spica.weatherc.common.WeatherCodeUtils
 import com.spica.weatherc.common.getIconRes
-import com.spica.weatherc.ui.theme.LightTextColor
 import com.spica.weatherc.model.weather.Weather
+import com.spica.weatherc.ui.theme.LightTextColor
 import java.text.SimpleDateFormat
 import java.util.*
 

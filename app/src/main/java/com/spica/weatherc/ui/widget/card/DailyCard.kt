@@ -39,8 +39,16 @@ import me.spica.weather.model.weather.DailyWeatherBean
 
 
 @Composable
-fun DailyCard(list: List<DailyWeatherBean>?) {
-    val listData = (0..9).toList()
+fun DailyCard(list: List<DailyWeatherBean>) {
+    val sortList = list.toList()
+    val maxMaxTemp = sortList.maxByOrNull { it.maxTemp }?.maxTemp ?: 0
+    val minMaxTemp = sortList.minByOrNull { it.maxTemp }?.maxTemp ?: 0
+
+    val maxMinTemp = sortList.maxByOrNull { it.minTemp }?.minTemp ?: 0
+    val minMinTemp = sortList.minByOrNull { it.minTemp }?.minTemp ?: 0
+
+
+
     Card() {
         Column(
             Modifier
@@ -56,113 +64,38 @@ fun DailyCard(list: List<DailyWeatherBean>?) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             LazyRow {
-                items(listData) {
-                    Column(Modifier.width(70.dp)) {
-                        Text(
-                            text = "23h",
-                            Modifier.fillMaxWidth(),
-                            textAlign = TextAlign.Center,
-                            color = Color.Black,
-                            fontWeight = FontWeight.Bold
+                items(list.size) {
+                    Column() {
+                        DailyWeatherMaxTempChartItem(
+                            maxMaxTemp = maxMaxTemp,
+                            minMaxTemp = minMaxTemp,
+                            currentMaxTemp = list[it].maxTemp,
+                            lastMaxTemp = if (it != 0) {
+                                list[it - 1].maxTemp
+                            } else {
+                                null
+                            },
+                            nextMaxTemp = if (it < list.size - 1) {
+                                list[it + 1].maxTemp
+                            } else {
+                                null
+                            }
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Canvas(modifier = Modifier
-                            .height(100.dp)
-                            .width(70.dp),
-                            onDraw = {
-                                val bgPath = Path()
-                                bgPath.moveTo(0f, size.height / 2f)
-                                bgPath.lineTo(size.width, size.height / 2f)
-                                bgPath.lineTo(size.width, size.height)
-                                bgPath.lineTo(0f, size.height)
-                                bgPath.close()
-
-                                drawPath(
-                                    path = bgPath,
-                                    style = Fill,
-                                    brush = Brush.linearGradient(
-                                        colors = listOf(
-                                            BgPathColor,
-                                            Color.Transparent
-                                        ),
-                                        start = Offset(0f, 0f),
-                                        end = Offset(0f, size.height)
-                                    )
-                                )
-
-                                drawLine(
-                                    color = Color.LightGray,
-                                    start = Offset(0f, 50.dp.toPx()),
-                                    end = Offset(35.dp.toPx(), 50.dp.toPx()),
-                                    strokeWidth = 2.dp.toPx(),
-
-                                    )
-                                drawLine(
-                                    color = Color.LightGray,
-                                    start = Offset(35f, 50.dp.toPx()),
-                                    end = Offset(70.dp.toPx(), 50.dp.toPx()),
-                                    strokeWidth = 2.dp.toPx()
-                                )
-
-                                drawLine(
-                                    color = Color.LightGray,
-                                    start = Offset(size.width / 2f, size.height / 2f),
-                                    end = Offset(size.width / 2f, size.height),
-                                    strokeWidth = 2.dp.toPx(),
-                                    pathEffect = PathEffect
-                                        .dashPathEffect(
-                                            floatArrayOf(
-                                                4.dp.toPx(),
-                                                2.dp.toPx()
-                                            ), 0f
-                                        )
-                                )
-
-
-
-                                drawCircle(
-                                    color = Color.DarkGray,
-                                    radius = 6.dp.toPx(),
-                                    center = Offset(x = 35.dp.toPx(), y = 50.dp.toPx())
-                                )
-
-                                drawCircle(
-                                    color = Color.White,
-                                    radius = 4.dp.toPx(),
-                                    center = Offset(x = 35.dp.toPx(), y = 50.dp.toPx())
-                                )
-
-                            })
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Box(
-                            Modifier.fillMaxWidth(),
-                            Alignment.Center
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_sunny),
-                                contentDescription = null,
-                                Modifier.width(48.dp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_umbrella),
-                                contentDescription = null,
-                                tint = LightTextColor
-                            )
-                            Spacer(modifier = Modifier.width(2.dp))
-                            Text(
-                                text = "58%",
-                                textAlign = TextAlign.Center,
-                                color = LightTextColor,
-                                fontSize = 14.sp
-                            )
-                        }
+                        DailyWeatherMinTempChartItem(
+                            maxMinTemp = maxMinTemp,
+                            minMinTemp = minMinTemp,
+                            currentMinTemp = list[it].minTemp,
+                            lastMinTep = if (it != 0) {
+                                list[it - 1].minTemp
+                            } else {
+                                null
+                            },
+                            nextMinTemp = if (it < list.size - 1) {
+                                list[it + 1].minTemp
+                            } else {
+                                null
+                            }
+                        )
                     }
                 }
             }
@@ -194,7 +127,7 @@ fun DailyWeatherMaxTempChartItem(
     Canvas(
         modifier = Modifier
             .width(70.dp)
-            .height(35.dp),
+            .height(50.dp),
         onDraw = {
 
             blurLinePaint.maskFilter = BlurMaskFilter(
@@ -202,7 +135,7 @@ fun DailyWeatherMaxTempChartItem(
                 BlurMaskFilter.Blur.SOLID
             )
 
-            val paddingTop = 20.dp.toPx()
+            val paddingTop = 12.dp.toPx()
 
             val paddingBottom = 20.dp.toPx()
 
@@ -210,14 +143,14 @@ fun DailyWeatherMaxTempChartItem(
                 size.width / 2f,
 //                    size.height/2f
                 (size.height - paddingBottom) -
-                        (size.height - paddingTop - paddingBottom) * ((currentValue - minValue) * 1f / maxValue)
+                        (size.height - paddingTop - paddingBottom) * ((currentMaxTemp - minMaxTemp) * 1f / maxMaxTemp)
             )
 
             lastMaxTemp?.let {
                 val lastCenterHeight =
                     (size.height - paddingBottom) -
                             (size.height - paddingTop - paddingBottom) *
-                            ((it - minValue) * 1f / maxValue)
+                            ((it - minMaxTemp) * 1f / maxMaxTemp)
                 val offsetLeft = Offset(
                     0f,
                     lastCenterHeight / 2 +
@@ -238,10 +171,8 @@ fun DailyWeatherMaxTempChartItem(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             BgPathColor,
-                            Color.Transparent
-                        ),
-                        start = Offset(0f, 0f),
-                        end = Offset(0f, size.height)
+                            BgPathColor
+                        )
                     )
                 )
 
@@ -255,30 +186,18 @@ fun DailyWeatherMaxTempChartItem(
                 }
 
 
-                drawLine(
-                    color = Color.LightGray,
-                    start = Offset(offsetCenter.x, size.height),
-                    end = Offset(offsetLeft.x, size.height),
-                    strokeWidth = 2.dp.toPx(),
-                    pathEffect = PathEffect
-                        .dashPathEffect(
-                            floatArrayOf(
-                                4.dp.toPx(),
-                                2.dp.toPx()
-                            ), 0f
-                        )
-                )
+
 
 
             }
 
 
 
-            nextValue?.let {
+            nextMaxTemp?.let {
                 val nextCenterHeight =
                     (size.height - paddingBottom) -
                             (size.height - paddingTop - paddingBottom) *
-                            ((it - minValue) * 1f / maxValue)
+                            ((it - minMaxTemp) * 1f / maxMaxTemp)
                 val offsetRight = Offset(
                     size.width,
                     nextCenterHeight / 2 +
@@ -298,10 +217,156 @@ fun DailyWeatherMaxTempChartItem(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             BgPathColor,
-                            Color.Transparent
-                        ),
-                        start = Offset(0f, 0f),
-                        end = Offset(0f, size.height)
+                            BgPathColor
+                        )
+                    )
+                )
+
+//                    drawLine(
+//                        color = Color.LightGray,
+//                        start = offsetCenter,
+//                        end = offsetRight,
+//                        strokeWidth = 2.dp.toPx()
+//                    )
+
+
+                // 绘制线
+                drawIntoCanvas { canvas ->
+                    canvas.nativeCanvas.drawLine(
+                        offsetCenter.x, offsetCenter.y,
+                        offsetRight.x, offsetRight.y,
+                        blurLinePaint
+                    )
+                }
+
+
+            }
+
+
+
+            // 中心点
+            drawCircle(
+                color = Color.DarkGray,
+                radius = 3.dp.toPx(),
+                center = offsetCenter
+            )
+
+        }
+    )
+
+}
+
+
+@Composable
+fun DailyWeatherMinTempChartItem(
+    maxMinTemp: Int,
+    minMinTemp: Int,
+    currentMinTemp: Int,
+    nextMinTemp: Int?,
+    lastMinTep: Int?
+) {
+
+    val blurLinePaint = Paint().asFrameworkPaint().apply {
+        strokeWidth = 6f
+        color = ContextCompat.getColor(LocalContext.current, R.color.textColorPrimaryHintLight)
+        maskFilter = BlurMaskFilter(4f, BlurMaskFilter.Blur.SOLID)
+    }
+
+    Canvas(
+        modifier = Modifier
+            .width(70.dp)
+            .height(50.dp),
+        onDraw = {
+
+            blurLinePaint.maskFilter = BlurMaskFilter(
+                4.dp.toPx(),
+                BlurMaskFilter.Blur.SOLID
+            )
+
+            val paddingTop = 20.dp.toPx()
+
+            val paddingBottom = 12.dp.toPx()
+
+            val offsetCenter = Offset(
+                size.width / 2f,
+//                    size.height/2f
+                (size.height - paddingBottom) -
+                        (size.height - paddingTop - paddingBottom) * ((currentMinTemp - minMinTemp) * 1f / maxMinTemp)
+            )
+
+            lastMinTep?.let {
+                val lastCenterHeight =
+                    (size.height - paddingBottom) -
+                            (size.height - paddingTop - paddingBottom) *
+                            ((it - minMinTemp) * 1f / maxMinTemp)
+                val offsetLeft = Offset(
+                    0f,
+                    lastCenterHeight / 2 +
+                            offsetCenter.y / 2
+                )
+
+                val bgPath = Path()
+                bgPath.moveTo(offsetLeft.x, offsetLeft.y)
+                bgPath.lineTo(offsetLeft.x, 0F)
+                bgPath.lineTo(offsetCenter.x, 0f)
+                bgPath.lineTo(offsetCenter.x, offsetCenter.y)
+                bgPath.close()
+
+                // 绘制背景
+                drawPath(
+                    path = bgPath,
+                    style = Fill,
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            BgPathColor,
+                            BgPathColor
+                        )
+                    )
+                )
+
+                // 绘制线
+                drawIntoCanvas { canvas ->
+                    canvas.nativeCanvas.drawLine(
+                        offsetCenter.x, offsetCenter.y,
+                        offsetLeft.x, offsetLeft.y,
+                        blurLinePaint
+                    )
+                }
+
+
+
+
+
+            }
+
+
+
+            nextMinTemp?.let {
+                val nextCenterHeight =
+                    (size.height - paddingBottom) -
+                            (size.height - paddingTop - paddingBottom) *
+                            ((it - minMinTemp) * 1f / maxMinTemp)
+                val offsetRight = Offset(
+                    size.width,
+                    nextCenterHeight / 2 +
+                            offsetCenter.y / 2
+                )
+
+                val bgPath = Path()
+                bgPath.moveTo(offsetRight.x, offsetRight.y)
+                bgPath.lineTo(offsetRight.x, 0f)
+                bgPath.lineTo(offsetCenter.x, 0f)
+                bgPath.lineTo(offsetCenter.x, offsetCenter.y)
+                bgPath.close()
+
+                drawPath(
+                    path = bgPath,
+                    style = Fill,
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            BgPathColor,
+                            BgPathColor
+                        )
                     )
                 )
 
@@ -324,35 +389,11 @@ fun DailyWeatherMaxTempChartItem(
 
 
 
-                drawLine(
-                    color = Color.LightGray,
-                    start = Offset(offsetCenter.x, size.height),
-                    end = Offset(offsetRight.x, size.height),
-                    strokeWidth = 2.dp.toPx(),
-                    pathEffect = PathEffect
-                        .dashPathEffect(
-                            floatArrayOf(
-                                4.dp.toPx(),
-                                2.dp.toPx()
-                            ), 0f
-                        )
-                )
+
 
             }
 
-            drawLine(
-                color = Color.LightGray,
-                start = offsetCenter,
-                end = Offset(offsetCenter.x, size.height),
-                strokeWidth = 2.dp.toPx(),
-                pathEffect = PathEffect
-                    .dashPathEffect(
-                        floatArrayOf(
-                            4.dp.toPx(),
-                            2.dp.toPx()
-                        ), 0f
-                    )
-            )
+
 
             // 中心点
             drawCircle(
@@ -360,36 +401,6 @@ fun DailyWeatherMaxTempChartItem(
                 radius = 3.dp.toPx(),
                 center = offsetCenter
             )
-
-        }
-
-
-
-    )
-
-}
-
-
-@Composable
-fun DailyWeatherMinTempChartItem(
-    maxMinTemp: Int,
-    minMinTemp: Int,
-    currentMinTemp: Int,
-    nextMinTemp: Int,
-    lastMinTep: Int
-) {
-
-    val blurLinePaint = Paint().asFrameworkPaint().apply {
-        strokeWidth = 6f
-        color = ContextCompat.getColor(LocalContext.current, R.color.textColorPrimaryHintLight)
-        maskFilter = BlurMaskFilter(4f, BlurMaskFilter.Blur.SOLID)
-    }
-
-    Canvas(
-        modifier = Modifier
-            .width(70.dp)
-            .height(35.dp),
-        onDraw = {
 
         }
     )

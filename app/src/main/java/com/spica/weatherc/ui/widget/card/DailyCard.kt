@@ -1,40 +1,26 @@
 package com.spica.weatherc.ui.widget.card
 
 import android.graphics.BlurMaskFilter
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.spica.weatherc.R
 import com.spica.weatherc.ui.theme.BgPathColor
-import com.spica.weatherc.ui.theme.LightTextColor
 import me.spica.weather.model.weather.DailyWeatherBean
 
 
@@ -49,7 +35,7 @@ fun DailyCard(list: List<DailyWeatherBean>) {
 
 
 
-    Card() {
+    Card {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -118,6 +104,9 @@ fun DailyWeatherMaxTempChartItem(
     nextMaxTemp: Int?
 ) {
 
+    val value = animateIntAsState(targetValue = currentMaxTemp)
+
+
     val blurLinePaint = Paint().asFrameworkPaint().apply {
         strokeWidth = 6f
         color = ContextCompat.getColor(LocalContext.current, R.color.textColorPrimaryHintLight)
@@ -143,7 +132,7 @@ fun DailyWeatherMaxTempChartItem(
                 size.width / 2f,
 //                    size.height/2f
                 (size.height - paddingBottom) -
-                        (size.height - paddingTop - paddingBottom) * ((currentMaxTemp - minMaxTemp) * 1f / maxMaxTemp)
+                        (size.height - paddingTop - paddingBottom) * ((value.value - minMaxTemp) * 1f / maxMaxTemp)
             )
 
             lastMaxTemp?.let {
@@ -185,10 +174,6 @@ fun DailyWeatherMaxTempChartItem(
                     )
                 }
 
-
-
-
-
             }
 
 
@@ -222,12 +207,19 @@ fun DailyWeatherMaxTempChartItem(
                     )
                 )
 
-//                    drawLine(
-//                        color = Color.LightGray,
-//                        start = offsetCenter,
-//                        end = offsetRight,
-//                        strokeWidth = 2.dp.toPx()
-//                    )
+                drawLine(
+                    color = Color.LightGray,
+                    start = offsetCenter,
+                    end = Offset(offsetCenter.x, size.height),
+                    strokeWidth = 2.dp.toPx(),
+                    pathEffect = PathEffect
+                        .dashPathEffect(
+                            floatArrayOf(
+                                4.dp.toPx(),
+                                2.dp.toPx()
+                            ), 0f
+                        )
+                )
 
 
                 // 绘制线
@@ -370,14 +362,6 @@ fun DailyWeatherMinTempChartItem(
                     )
                 )
 
-//                    drawLine(
-//                        color = Color.LightGray,
-//                        start = offsetCenter,
-//                        end = offsetRight,
-//                        strokeWidth = 2.dp.toPx()
-//                    )
-
-
                 // 绘制线
                 drawIntoCanvas { canvas ->
                     canvas.nativeCanvas.drawLine(
@@ -386,12 +370,23 @@ fun DailyWeatherMinTempChartItem(
                         blurLinePaint
                     )
                 }
-
-
-
-
-
             }
+
+
+            drawLine(
+                color = Color.LightGray,
+                start = offsetCenter,
+                end = Offset(offsetCenter.x, 0f),
+                strokeWidth = 2.dp.toPx(),
+                pathEffect = PathEffect
+                    .dashPathEffect(
+                        floatArrayOf(
+                            4.dp.toPx(),
+                            2.dp.toPx()
+                        ), 0f
+                    )
+            )
+
 
 
 

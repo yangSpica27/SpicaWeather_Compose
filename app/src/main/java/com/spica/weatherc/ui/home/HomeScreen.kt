@@ -33,6 +33,7 @@ fun HomeScreen(
     val scrollState = rememberScrollState()
     val weatherState =
         viewModel.weatherFlow.collectAsState(initial = null)
+
     viewModel.changeCity(cityViewModel.getAllCity().first())
     Scaffold(
         topBar = {
@@ -80,6 +81,8 @@ fun HomeScreen(
                             DailyCard(list = dailyWeather)
                             Spacer(modifier = Modifier.height(12.dp))
                             SunriseCard()
+                            Spacer(modifier = Modifier.height(12.dp))
+                            AirCard()
                             Spacer(modifier = Modifier.height(12.dp))
                             TipsCard(weather = this@with)
                             Spacer(modifier = Modifier.height(40.dp))
